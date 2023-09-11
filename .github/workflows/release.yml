@@ -1,9 +1,7 @@
 name: Create Release on Merge or Trigger
 
 on:
-  push:
-    branches:
-      - main  # Remplacez par la branche principale de votre dépôt
+  workflow_dispatch:
   pull_request:
     types:
       - closed
