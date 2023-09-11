@@ -1,10 +1,9 @@
 name: Create Release on Merge or Trigger
 
 on:
-  workflow_dispatch:
-  pull_request:
-    types:
-      - closed
+  tags:
+    - v*
+  
 
 jobs:
   release:
