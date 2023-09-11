@@ -1,8 +1,9 @@
-
 name: Create Release on Merge or Trigger
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main  # Remplacez par la branche principale de votre dépôt
   pull_request:
     types:
       - closed
@@ -23,10 +24,9 @@ jobs:
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         with:
-          files: |
-            release/svg_files.zip
+          files: release/svg_files.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -38,4 +38,5 @@ jobs:
           asset_path: release/svg_files.zip
           asset_name: svg_files.zip
           asset_content_type: application/zip
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
