@@ -1,1 +1,41 @@
 
+name: Create Release on Merge or Trigger
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Create Zip Archive
+        run: |
+          mkdir release
+          zip -r release/svg_files.zip svg/
+        working-directory: ${{ github.workspace }}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          files: |
+            release/svg_files.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Asset
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: release/svg_files.zip
+          asset_name: svg_files.zip
+          asset_content_type: application/zip
+
